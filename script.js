@@ -946,3 +946,117 @@ async function submitSurvey() {
     }
 
 }
+// ============================================================
+// COMPRESS PROPERTY PHOTO
+// ============================================================
+
+function compressImage(file) {
+
+    return new Promise(
+        function(resolve, reject) {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload = function(event) {
+
+                const img =
+                    new Image();
+
+
+                img.onload = function() {
+
+                    const MAX_WIDTH = 1600;
+
+                    let width =
+                        img.width;
+
+                    let height =
+                        img.height;
+
+
+                    // Reduce large phone photographs
+
+                    if (width > MAX_WIDTH) {
+
+                        height =
+                            height *
+                            (MAX_WIDTH / width);
+
+                        width =
+                            MAX_WIDTH;
+
+                    }
+
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+
+                    canvas.width =
+                        width;
+
+                    canvas.height =
+                        height;
+
+
+                    const ctx =
+                        canvas.getContext(
+                            "2d"
+                        );
+
+
+                    ctx.drawImage(
+                        img,
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+
+
+                    // JPEG quality = 75%
+
+                    const compressed =
+                        canvas.toDataURL(
+                            "image/jpeg",
+                            0.75
+                        );
+
+
+                    // Remove data:image/jpeg;base64,
+
+                    const base64 =
+                        compressed.split(
+                            ","
+                        )[1];
+
+
+                    resolve(base64);
+
+                };
+
+
+                img.onerror =
+                    reject;
+
+
+                img.src =
+                    event.target.result;
+
+            };
+
+
+            reader.onerror =
+                reject;
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
