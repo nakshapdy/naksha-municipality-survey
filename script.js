@@ -740,19 +740,14 @@ function createUniqueKey(data) {
 
 async function submitSurvey() {
 
-    const data =
-        getBasicFormData();
-
+    const data = getBasicFormData();
 
     // --------------------------------------------------------
     // CREATE UNIQUE KEY
     // --------------------------------------------------------
 
     const uniqueKey =
-        createUniqueKey(
-            data
-        );
-
+        createUniqueKey(data);
 
     if (!uniqueKey) {
 
@@ -761,16 +756,63 @@ async function submitSurvey() {
         );
 
         return;
+    }
+
+    data.uniqueKey = uniqueKey;
+
+
+    // --------------------------------------------------------
+    // FIND PHOTO
+    // --------------------------------------------------------
+
+    const photoInput =
+        document.querySelector(
+            'input[type="file"]'
+        );
+
+    const photo =
+        photoInput &&
+        photoInput.files &&
+        photoInput.files.length > 0
+            ? photoInput.files[0]
+            : null;
+
+
+    // --------------------------------------------------------
+    // COMPRESS PHOTO
+    // --------------------------------------------------------
+
+    if (photo) {
+
+        try {
+
+            data.photoBase64 =
+                await compressImage(photo);
+
+            data.photoName =
+                photo.name;
+
+            data.photoMimeType =
+                "image/jpeg";
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to process the property photo."
+            );
+
+            return;
+        }
 
     }
 
 
-    data.uniqueKey =
-        uniqueKey;
-
-
     // --------------------------------------------------------
-    // SHOW SUBMITTING MESSAGE
+    // SUBMIT BUTTON
     // --------------------------------------------------------
 
     const submitButton =
@@ -789,11 +831,11 @@ async function submitSurvey() {
     }
 
 
-    try {
+    // --------------------------------------------------------
+    // SEND TO GOOGLE APPS SCRIPT
+    // --------------------------------------------------------
 
-        // ----------------------------------------------------
-        // SEND DATA TO GOOGLE APPS SCRIPT
-        // ----------------------------------------------------
+    try {
 
         const response =
             await fetch(
@@ -810,9 +852,7 @@ async function submitSurvey() {
                     },
 
                     body:
-                        JSON.stringify(
-                            data
-                        )
+                        JSON.stringify(data)
 
                 }
             );
@@ -826,9 +866,7 @@ async function submitSurvey() {
         // SUCCESS
         // ----------------------------------------------------
 
-        if (
-            result.success
-        ) {
+        if (result.success) {
 
             alert(
 
@@ -840,7 +878,6 @@ async function submitSurvey() {
 
             );
 
-
             console.log(
                 "Server response:",
                 result
@@ -849,11 +886,14 @@ async function submitSurvey() {
 
             // Reset form
 
-            document
-                .querySelector(
-                    "form"
-                )?.reset();
+            const form =
+                document.querySelector("form");
 
+            if (form) {
+
+                form.reset();
+
+            }
 
         }
 
@@ -877,13 +917,9 @@ async function submitSurvey() {
 
     }
 
-
     catch (error) {
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         alert(
 
