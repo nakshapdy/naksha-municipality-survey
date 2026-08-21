@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NAKSHA Municipality Survey</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="container py-3">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="text-center mb-4">
+
+        <h3>NAKSHA Survey</h3>
+
+        <p class="text-muted mb-0">
+            Municipality Building Data Collection
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         1 - 6 : PROPERTY IDENTIFICATION
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Property Identification</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <!-- 1. Locality -->
+
+            <label class="form-label">
+                1. Name of Locality
+            </label>
+
+            <select class="form-select mb-3">
+
+                <option value="">
+                    Select Locality
+                </option>
+
+                <option>
+                    Murungapakkam East
+                </option>
+
+                <option>
+                    Murungapakkam West
+                </option>
+
+            </select>
+
+
+
+            <!-- 2. Digital Block -->
+
+            <label class="form-label">
+                2. Digital Block Number
+            </label>
+
+            <select
+                id="digitalBlock"
+                class="form-select mb-3">
+
+                <option value="">
+                    Select Digital Block
+                </option>
+
+            </select>
+
+
+
+            <!-- 3. Digital Survey Number -->
+
+            <label class="form-label">
+                3. Digital Survey Number
+            </label>
+
+            <input
+                type="number"
+                class="form-control mb-3"
+                placeholder="Enter Digital Survey Number">
+
+
+
+            <!-- 4. Property Type -->
+
+            <label class="form-label">
+                4. Type of Property
+            </label>
+
+            <select class="form-select mb-3">
+
+                <option value="">
+                    Select Property Type
+                </option>
+
+                <option>Plot</option>
+                <option>Individual Building</option>
+                <option>Apartment</option>
+                <option>Industries</option>
+                <option>Commercial</option>
+                <option>Educational Building</option>
+                <option>Hospital</option>
+                <option>Government Land</option>
+
+            </select>
+
+
+
+            <!-- 5. Occupancy -->
+
+            <label class="form-label">
+                5. Type of Occupancy
+            </label>
+
+            <select class="form-select mb-3">
+
+                <option value="">
+                    Select Occupancy
+                </option>
+
+                <option>Owner (R)</option>
+                <option>Owner (C)</option>
+                <option>Tenant (R)</option>
+                <option>Tenant (C)</option>
+                <option>Others</option>
+
+            </select>
+
+
+
+            <!-- 6. Building Name -->
+
+            <label class="form-label">
+                6. Building / Apartment Name
+            </label>
+
+            <input
+                type="text"
+                class="form-control">
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         7 - 23 : FLOOR DETAILS
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Floor Details</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <!-- 7. Number of Floors -->
+
+            <label class="form-label">
+                7. No. of Floors
+            </label>
+
+            <input
+                type="number"
+                id="numberOfFloors"
+                class="form-control mb-4"
+                min="1"
+                placeholder="Enter number of floors">
+
+
+
+            <!-- FLOOR CONTAINER -->
+
+            <div id="floorContainer"></div>
+
+
+            <!-- ADD FLOOR -->
+
+            <button
+                type="button"
+                class="btn btn-outline-primary w-100 mt-2"
+                onclick="addFloor()">
+
+                + Add Floor
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         21 - 23 : HEAD ROOM
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Head Room</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <label class="form-label">
+                Is Head Room Available?
+            </label>
+
+
+            <div class="form-check">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="headRoom"
+                    value="Yes"
+                    onchange="showHeadRoom(true)">
+
+                <label class="form-check-label">
+                    Yes
+                </label>
+
+            </div>
+
+
+            <div class="form-check mb-3">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="headRoom"
+                    value="No"
+                    onchange="showHeadRoom(false)">
+
+                <label class="form-check-label">
+                    No
+                </label>
+
+            </div>
+
+
+
+            <!-- HEAD ROOM DETAILS -->
+
+            <div
+                id="headRoomDetails"
+                style="display:none;">
+
+                <label class="form-label">
+                    Head Room Roof Type
+                </label>
+
+                <select class="form-select mb-3">
+
+                    <option value="">
+                        Select Roof Type
+                    </option>
+
+                    <option>RCC</option>
+                    <option>ACC</option>
+                    <option>Madras Terrace</option>
+                    <option>Steel Structure</option>
+
+                </select>
+
+
+
+                <label class="form-label">
+                    Head Room Usage
+                </label>
+
+                <select class="form-select mb-3">
+
+                    <option value="">
+                        Select Usage
+                    </option>
+
+                    <option>Residential (O)</option>
+                    <option>Residential (T)</option>
+                    <option>Commercial (O)</option>
+                    <option>Commercial (T)</option>
+                    <option>Others</option>
+
+                </select>
+
+
+
+                <label class="form-label">
+                    Extent of Head Room (Sqft)
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         24 : BASEMENT
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Basement</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <label class="form-label">
+                24. Is Basement Available?
+            </label>
+
+
+            <div class="form-check">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="basement"
+                    value="Yes"
+                    onchange="showBasement(true)">
+
+                <label class="form-check-label">
+                    Yes
+                </label>
+
+            </div>
+
+
+            <div class="form-check mb-3">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="basement"
+                    value="No"
+                    onchange="showBasement(false)">
+
+                <label class="form-check-label">
+                    No
+                </label>
+
+            </div>
+
+
+
+            <!-- BASEMENT DETAILS -->
+
+            <div
+                id="basementDetails"
+                style="display:none;">
+
+
+                <label class="form-label">
+                    Basement Roof Type
+                </label>
+
+                <select class="form-select mb-3">
+
+                    <option value="">
+                        Select Roof Type
+                    </option>
+
+                    <option>RCC</option>
+                    <option>ACC</option>
+                    <option>Madras Terrace</option>
+                    <option>Steel Structure</option>
+
+                </select>
+
+
+
+                <label class="form-label">
+                    Basement Usage
+                </label>
+
+                <select class="form-select mb-3">
+
+                    <option value="">
+                        Select Usage
+                    </option>
+
+                    <option>Residential (O)</option>
+                    <option>Residential (T)</option>
+                    <option>Commercial (O)</option>
+                    <option>Commercial (T)</option>
+                    <option>Others</option>
+
+                </select>
+
+
+
+                <label class="form-label">
+                    Extent of Basement (Sqft)
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         25 - 28 : AREA DETAILS
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Area Details</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <!-- 25 -->
+
+            <label class="form-label">
+                25. Overall Built-up Area (Sqft)
+            </label>
+
+            <input
+                type="number"
+                class="form-control mb-3">
+
+
+
+            <!-- 26 -->
+
+            <label class="form-label">
+                26. Plinth Area (Sqft)
+            </label>
+
+            <input
+                type="number"
+                class="form-control mb-3">
+
+
+
+            <!-- 27 -->
+
+            <label class="form-label">
+                27. Parking Area (Sqft)
+            </label>
+
+            <input
+                type="number"
+                class="form-control mb-3">
+
+
+
+            <!-- 28 -->
+
+            <label class="form-label">
+                28. Garage Area (Sqft)
+            </label>
+
+            <input
+                type="number"
+                class="form-control">
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         29 - 32 : MUNICIPALITY ASSESSMENT
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Municipality Assessment</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <!-- 29 -->
+
+            <label class="form-label">
+                29. Whether Assessed or Not
+            </label>
+
+            <select
+                id="assessed"
+                class="form-select mb-3">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option value="Yes">
+                    Yes
+                </option>
+
+                <option value="No">
+                    No
+                </option>
+
+            </select>
+
+
+
+            <!-- 30 -->
+
+            <label class="form-label">
+                30. Municipality Assessment No.
+            </label>
+
+            <input
+                type="text"
+                class="form-control mb-3">
+
+
+
+            <!-- 31 -->
+
+            <label class="form-label">
+                31. VLT if Assessed
+            </label>
+
+            <select
+                id="vlt"
+                class="form-select mb-3">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option>Yes</option>
+                <option>No</option>
+
+            </select>
+
+
+
+            <!-- 32 -->
+
+            <label class="form-label">
+                32. If Yes, Paid or Not
+            </label>
+
+            <select class="form-select">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option>Paid</option>
+                <option>Not Paid</option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         33 - 37 : ADDRESS & CONTACT
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Address & Contact</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <!-- 33 -->
+
+            <label class="form-label">
+                33. Address of Property
+            </label>
+
+            <textarea
+                class="form-control mb-3"
+                rows="3"></textarea>
+
+
+
+            <!-- 34 -->
+
+            <label class="form-label">
+                34. Mobile No.
+            </label>
+
+            <input
+                type="tel"
+                class="form-control mb-3">
+
+
+
+            <!-- 35 -->
+
+            <label class="form-label">
+                35. Year of Commencement of Building
+            </label>
+
+            <input
+                type="number"
+                class="form-control mb-3"
+                placeholder="YYYY">
+
+
+
+            <!-- 36 -->
+
+            <label class="form-label">
+                36. Is owner's communication address same as property address?
+            </label>
+
+            <select class="form-select mb-3">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option>Yes</option>
+                <option>No</option>
+
+            </select>
+
+
+
+            <!-- 37 -->
+
+            <label class="form-label">
+                37. Owner's Communication Address
+            </label>
+
+            <textarea
+                class="form-control"
+                rows="3"></textarea>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         38 - 39 : PHOTO & REMARKS
+    ====================================================== -->
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <strong>Photo & Remarks</strong>
+        </div>
+
+        <div class="card-body">
+
+
+            <!-- 38 -->
+
+            <label class="form-label">
+                38. Upload Property Photo
+            </label>
+
+            <input
+                type="file"
+                class="form-control mb-3"
+                accept="image/*"
+                capture="environment">
+
+
+
+            <!-- 39 -->
+
+            <label class="form-label">
+                39. Remarks if any
+            </label>
+
+            <textarea
+                class="form-control"
+                rows="3"></textarea>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SUBMIT -->
+
+    <button
+        type="button"
+        class="btn btn-primary w-100 mb-4"
+        onclick="submitSurvey()">
+
+        Submit Survey
+
+    </button>
+
+
+</div>
+
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- Our JavaScript -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
