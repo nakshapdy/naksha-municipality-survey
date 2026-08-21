@@ -1,34 +1,48 @@
 // ============================================================
 // NAKSHA MUNICIPALITY SURVEY
-// DATA COLLECTION SCRIPT
+// GOOGLE SHEETS CONNECTION
 // ============================================================
 
 
 // ============================================================
-// 1. DIGITAL BLOCK NUMBERS 1–74
+// GOOGLE APPS SCRIPT WEB APP URL
 // ============================================================
 
-const blockDropdown = document.getElementById("digitalBlock");
+const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzAWmBUBS464b43uB4zQuPwy3-KpfiX5k3GHAg_GfF4cE1FvFdBp7qvS4I1BuypaJviBA/exec";
+
+
+// ============================================================
+// DIGITAL BLOCK NUMBERS 1–74
+// ============================================================
+
+const blockDropdown =
+    document.getElementById("digitalBlock");
+
 
 for (let i = 1; i <= 74; i++) {
 
-    const option = document.createElement("option");
+    const option =
+        document.createElement("option");
 
     option.value = i;
+
     option.textContent = i;
 
     blockDropdown.appendChild(option);
+
 }
 
 
 // ============================================================
-// 2. FLOOR MANAGEMENT
+// FLOOR MANAGEMENT
 // ============================================================
 
 let floorCount = 0;
 
 
-// Add Ground Floor automatically when page loads
+// Ground Floor automatically appears
+
 addFloor();
 
 
@@ -40,20 +54,24 @@ function addFloor() {
 
     floorCount++;
 
-    let floorName = getFloorName(floorCount);
+    const floorName =
+        getFloorName(floorCount);
+
 
     const floorHTML = `
 
-        <div class="floor-card mb-3" id="floor-${floorCount}">
+        <div
+            class="floor-card mb-3"
+            id="floor-${floorCount}">
 
-            <div class="floor-title">
+            <div class="floor-title mb-3">
 
-                <strong>${floorName}</strong>
+                <strong>
+                    ${floorName}
+                </strong>
 
             </div>
 
-
-            <!-- ROOF TYPE -->
 
             <label class="form-label">
                 Roof Type
@@ -84,8 +102,6 @@ function addFloor() {
 
             </select>
 
-
-            <!-- USAGE -->
 
             <label class="form-label">
                 Usage
@@ -120,8 +136,6 @@ function addFloor() {
 
             </select>
 
-
-            <!-- EXTENT -->
 
             <label class="form-label">
                 Extent (Sqft)
@@ -178,19 +192,24 @@ function getFloorName(number) {
 
     };
 
-    return names[number] || `Floor ${number}`;
+
+    return names[number]
+        || `Floor ${number}`;
 
 }
 
 
 // ============================================================
-// 3. HEAD ROOM
+// HEAD ROOM
 // ============================================================
 
 function showHeadRoom(show) {
 
     const section =
-        document.getElementById("headRoomDetails");
+        document.getElementById(
+            "headRoomDetails"
+        );
+
 
     section.style.display =
         show ? "block" : "none";
@@ -199,13 +218,16 @@ function showHeadRoom(show) {
 
 
 // ============================================================
-// 4. BASEMENT
+// BASEMENT
 // ============================================================
 
 function showBasement(show) {
 
     const section =
-        document.getElementById("basementDetails");
+        document.getElementById(
+            "basementDetails"
+        );
+
 
     section.style.display =
         show ? "block" : "none";
@@ -214,48 +236,64 @@ function showBasement(show) {
 
 
 // ============================================================
-// 5. COLLECT FLOOR DATA
+// COLLECT FLOOR DATA
 // ============================================================
 
 function collectFloorData() {
 
     const floors = [];
 
+
     const floorCards =
-        document.querySelectorAll(".floor-card");
+        document.querySelectorAll(
+            ".floor-card"
+        );
 
 
-    floorCards.forEach(function(card, index) {
+    floorCards.forEach(
+        function(card, index) {
 
-        const roof =
-            card.querySelector(".floor-roof").value;
-
-        const usage =
-            card.querySelector(".floor-usage").value;
-
-        const extent =
-            card.querySelector(".floor-extent").value;
+            const roof =
+                card.querySelector(
+                    ".floor-roof"
+                ).value;
 
 
-        floors.push({
+            const usage =
+                card.querySelector(
+                    ".floor-usage"
+                ).value;
 
-            floorNumber: index + 1,
 
-            floorName:
-                getFloorName(index + 1),
+            const extent =
+                card.querySelector(
+                    ".floor-extent"
+                ).value;
 
-            roofType:
-                roof,
 
-            usage:
-                usage,
+            floors.push({
 
-            extent:
-                extent
+                floorNumber:
+                    index + 1,
 
-        });
+                floorName:
+                    getFloorName(
+                        index + 1
+                    ),
 
-    });
+                roofType:
+                    roof,
+
+                usage:
+                    usage,
+
+                extent:
+                    extent
+
+            });
+
+        }
+    );
 
 
     return floors;
@@ -264,7 +302,7 @@ function collectFloorData() {
 
 
 // ============================================================
-// 6. COLLECT HEAD ROOM DATA
+// HEAD ROOM DATA
 // ============================================================
 
 function collectHeadRoomData() {
@@ -300,10 +338,15 @@ function collectHeadRoomData() {
 
 
     const selects =
-        section.querySelectorAll("select");
+        section.querySelectorAll(
+            "select"
+        );
+
 
     const inputs =
-        section.querySelectorAll("input");
+        section.querySelectorAll(
+            "input"
+        );
 
 
     return {
@@ -325,7 +368,7 @@ function collectHeadRoomData() {
 
 
 // ============================================================
-// 7. COLLECT BASEMENT DATA
+// BASEMENT DATA
 // ============================================================
 
 function collectBasementData() {
@@ -361,10 +404,15 @@ function collectBasementData() {
 
 
     const selects =
-        section.querySelectorAll("select");
+        section.querySelectorAll(
+            "select"
+        );
+
 
     const inputs =
-        section.querySelectorAll("input");
+        section.querySelectorAll(
+            "input"
+        );
 
 
     return {
@@ -386,31 +434,44 @@ function collectBasementData() {
 
 
 // ============================================================
-// 8. GET ALL NORMAL FORM DATA
+// COLLECT ALL BASIC FORM DATA
 // ============================================================
 
 function getBasicFormData() {
 
     const cards =
-        document.querySelectorAll(".card");
+        document.querySelectorAll(
+            ".card"
+        );
 
 
-    // Property Identification
+    // --------------------------------------------------------
+    // PROPERTY IDENTIFICATION
+    // --------------------------------------------------------
 
-    const propertyCard = cards[0];
+    const propertyCard =
+        cards[0];
+
 
     const propertySelects =
-        propertyCard.querySelectorAll("select");
+        propertyCard.querySelectorAll(
+            "select"
+        );
+
 
     const propertyInputs =
-        propertyCard.querySelectorAll("input");
+        propertyCard.querySelectorAll(
+            "input"
+        );
 
 
     const locality =
         propertySelects[0]?.value || "";
 
+
     const digitalBlock =
         propertySelects[1]?.value || "";
+
 
     const digitalSurveyNumber =
         propertyInputs[0]?.value || "";
@@ -419,109 +480,146 @@ function getBasicFormData() {
     const propertyType =
         propertySelects[2]?.value || "";
 
+
     const occupancy =
         propertySelects[3]?.value || "";
+
 
     const buildingName =
         propertyInputs[1]?.value || "";
 
 
-    // Floor section
-
-    const floorSection =
-        cards[1];
+    // --------------------------------------------------------
+    // FLOOR COUNT
+    // --------------------------------------------------------
 
     const numberOfFloors =
-        floorSection.querySelector(
-            "#numberOfFloors"
-        )?.value || "";
+        document.getElementById(
+            "numberOfFloors"
+        ).value;
 
 
-    // Area details
+    // --------------------------------------------------------
+    // AREA
+    // --------------------------------------------------------
 
     const areaCard =
-        document.querySelectorAll(".card")[4];
+        cards[4];
+
 
     const areaInputs =
-        areaCard.querySelectorAll("input");
+        areaCard.querySelectorAll(
+            "input"
+        );
 
 
     const overallBuiltup =
         areaInputs[0]?.value || "";
 
+
     const plinthArea =
         areaInputs[1]?.value || "";
 
+
     const parkingArea =
         areaInputs[2]?.value || "";
+
 
     const garageArea =
         areaInputs[3]?.value || "";
 
 
-    // Assessment
+    // --------------------------------------------------------
+    // ASSESSMENT
+    // --------------------------------------------------------
 
     const assessmentCard =
-        document.querySelectorAll(".card")[5];
+        cards[5];
+
 
     const assessmentSelects =
-        assessmentCard.querySelectorAll("select");
+        assessmentCard.querySelectorAll(
+            "select"
+        );
+
 
     const assessmentInputs =
-        assessmentCard.querySelectorAll("input");
+        assessmentCard.querySelectorAll(
+            "input"
+        );
 
 
     const assessed =
         assessmentSelects[0]?.value || "";
 
+
     const assessmentNumber =
         assessmentInputs[0]?.value || "";
 
+
     const vlt =
         assessmentSelects[1]?.value || "";
+
 
     const vltPaid =
         assessmentSelects[2]?.value || "";
 
 
-    // Address
+    // --------------------------------------------------------
+    // ADDRESS
+    // --------------------------------------------------------
 
     const addressCard =
-        document.querySelectorAll(".card")[6];
+        cards[6];
+
 
     const addressInputs =
-        addressCard.querySelectorAll("input");
+        addressCard.querySelectorAll(
+            "input"
+        );
+
 
     const addressTextareas =
-        addressCard.querySelectorAll("textarea");
+        addressCard.querySelectorAll(
+            "textarea"
+        );
+
 
     const address =
         addressTextareas[0]?.value || "";
 
+
     const mobile =
         addressInputs[0]?.value || "";
 
+
     const commencementYear =
         addressInputs[1]?.value || "";
+
 
     const sameCommunicationAddress =
         addressCard.querySelector(
             "select"
         )?.value || "";
 
+
     const communicationAddress =
         addressTextareas[1]?.value || "";
 
 
-    // Photo + remarks
+    // --------------------------------------------------------
+    // PHOTO
+    // --------------------------------------------------------
 
     const photoCard =
-        document.querySelectorAll(".card")[7];
+        cards[7];
+
 
     const photo =
         photoCard.querySelector(
             'input[type="file"]'
         )?.files[0] || null;
+
 
     const remarks =
         photoCard.querySelector(
@@ -581,7 +679,9 @@ function getBasicFormData() {
         communicationAddress,
 
         photoName:
-            photo ? photo.name : "",
+            photo
+                ? photo.name
+                : "",
 
         remarks
 
@@ -591,7 +691,7 @@ function getBasicFormData() {
 
 
 // ============================================================
-// 9. CREATE UNIQUE KEY
+// UNIQUE KEY
 // ============================================================
 
 function createUniqueKey(data) {
@@ -607,34 +707,51 @@ function createUniqueKey(data) {
 
 
     const block =
-        String(data.digitalBlock)
-            .padStart(2, "0");
+        String(
+            data.digitalBlock
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     const survey =
-        String(data.digitalSurveyNumber)
-            .padStart(5, "0");
+        String(
+            data.digitalSurveyNumber
+        ).padStart(
+            5,
+            "0"
+        );
 
 
-    return `DB${block}-DS${survey}`;
+    return (
+        "DB" +
+        block +
+        "-DS" +
+        survey
+    );
 
 }
 
 
 // ============================================================
-// 10. SUBMIT SURVEY
+// SUBMIT TO GOOGLE APPS SCRIPT
 // ============================================================
 
-function submitSurvey() {
+async function submitSurvey() {
 
     const data =
         getBasicFormData();
 
 
-    // Create unique key
+    // --------------------------------------------------------
+    // CREATE UNIQUE KEY
+    // --------------------------------------------------------
 
     const uniqueKey =
-        createUniqueKey(data);
+        createUniqueKey(
+            data
+        );
 
 
     if (!uniqueKey) {
@@ -648,47 +765,148 @@ function submitSurvey() {
     }
 
 
-    // Add unique key
-
     data.uniqueKey =
         uniqueKey;
 
 
-    // Show collected data
+    // --------------------------------------------------------
+    // SHOW SUBMITTING MESSAGE
+    // --------------------------------------------------------
 
-    console.log(
-        "NAKSHA SURVEY DATA:"
-    );
-
-    console.log(
-        data
-    );
-
-
-    // For now show confirmation
-
-    alert(
-
-        "Survey data collected successfully!\n\n" +
-
-        "Unique Key: " +
-        uniqueKey +
-
-        "\n\n" +
-
-        "Data is currently stored only in this browser."
-
-    );
+    const submitButton =
+        document.querySelector(
+            'button[onclick="submitSurvey()"]'
+        );
 
 
-    // Display the data on screen
+    if (submitButton) {
 
-    console.log(
-        JSON.stringify(
-            data,
-            null,
-            2
-        )
-    );
+        submitButton.disabled = true;
+
+        submitButton.innerText =
+            "Submitting...";
+
+    }
+
+
+    try {
+
+        // ----------------------------------------------------
+        // SEND DATA TO GOOGLE APPS SCRIPT
+        // ----------------------------------------------------
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL,
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            data
+                        )
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        // ----------------------------------------------------
+        // SUCCESS
+        // ----------------------------------------------------
+
+        if (
+            result.success
+        ) {
+
+            alert(
+
+                "Survey submitted successfully!\n\n" +
+
+                "Unique Key:\n" +
+
+                uniqueKey
+
+            );
+
+
+            console.log(
+                "Server response:",
+                result
+            );
+
+
+            // Reset form
+
+            document
+                .querySelector(
+                    "form"
+                )?.reset();
+
+
+        }
+
+
+        // ----------------------------------------------------
+        // ERROR
+        // ----------------------------------------------------
+
+        else {
+
+            alert(
+
+                "Submission failed.\n\n" +
+
+                result.message
+
+            );
+
+        }
+
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+
+            "Unable to submit the survey.\n\n" +
+
+            "Please check your internet connection and try again."
+
+        );
+
+    }
+
+
+    finally {
+
+        if (submitButton) {
+
+            submitButton.disabled = false;
+
+            submitButton.innerText =
+                "Submit Survey";
+
+        }
+
+    }
 
 }
